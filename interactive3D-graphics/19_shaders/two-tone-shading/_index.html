@@ -1,0 +1,41 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r56/three.min.js"></script>
+    <script src="../../js/OrbitAndPanControls.js"></script>
+    <script src="../../js/Coordinates.js"></script>
+    <script src="../../js/dat.gui.min.js"></script>
+    <script src="../../js/uclass_BeveledBlockGeometry.js"></script>
+    <script src="../../js/uclass_TeapotGeometry.js"></script>
+    <script>$ = (e) => document.querySelector(e);</script>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script type="text/x-glsl" data-src="vertex.glsl" id="vertex"></script>
+    <script type="text/x-glsl" data-src="fragment.glsl" id="fragment"></script>
+    <script type="text/javascript" src="toon.js"></script>
+    <script>
+        async function fetchShaders() {
+            const shaderEls = document.querySelectorAll('script[type="text/x-glsl"]');
+            for(let el of shaderEls) {
+                let resp = await fetch(el.dataset.src);
+                el.textContent = await resp.text();
+            }
+        }
+         fetchShaders().then(() => {
+            try {
+                init();
+                fillScene();
+                setupGui();
+                addToDOM();
+                animate();
+            } catch(e) {
+                var errorReport = "Your program encountered an unrecoverable error, can not draw on canvas. Error was:<br/><br/>";
+                $('#container').append(errorReport+e);
+            }
+         });
+    </script>
+  </body>
+</html>
